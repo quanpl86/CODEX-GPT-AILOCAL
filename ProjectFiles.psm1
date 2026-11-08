@@ -3,7 +3,7 @@ function Resolve-ProjectFile {
     if ([IO.Path]::IsPathRooted($RelativePath) -or $RelativePath.Contains(':')) { throw 'Only project-relative paths are allowed' }
     $parts = $RelativePath.Replace('\','/').Split('/')
     if (@($parts | Where-Object { $_ -in @('','.','..') -or $_ -match '^(?i:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)' -or $_.IndexOfAny([IO.Path]::GetInvalidFileNameChars()) -ge 0 -or $_.EndsWith('.') -or $_.EndsWith(' ') }).Count) { throw 'Invalid project-relative path' }
-    if ($parts[0] -in @('.git','.codex','.agents','.ai-local','local-runs')) { throw 'Protected project directory' }
+    if ($parts[0] -in @('.git','.codex','.agents','.ai-local','.aws','.azure','.ssh','.gnupg','local-runs','.ai-local.apply.lock','.local-ai.request.lock')) { throw 'Protected project directory' }
     $root = [IO.Path]::GetFullPath($ProjectPath).TrimEnd('\','/')
     if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'Project directory does not exist' }
     $path = [IO.Path]::GetFullPath((Join-Path $root ($parts -join [IO.Path]::DirectorySeparatorChar)))

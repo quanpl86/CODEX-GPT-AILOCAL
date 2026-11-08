@@ -25,4 +25,6 @@ try {
     try { & $guard -Task web -ComfyPort $port } catch { $caught=$_.Exception.Message -match 'cannot be verified' }
     if(-not $caught){throw 'Guard failed to block unknown reachable server state'}
 } finally { $listener.Stop() }
+try { & $guard -Task web -ComfyPort $port }
+catch { if($_.Exception.Message -notmatch 'Not enough free RAM'){throw "Closed test port was not distinguished from unknown ComfyUI state: $($_.Exception.Message)"} }
 Write-Output 'PASS: running queue blocked, pending queue blocked, reachable server with unknown status blocked. No GPU work.'

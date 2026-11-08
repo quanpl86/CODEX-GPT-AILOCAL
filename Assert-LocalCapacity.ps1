@@ -9,13 +9,16 @@ try {
     try {
         $attempt=$probe.ConnectAsync('127.0.0.1',$ComfyPort)
         # A timeout is unknown, not evidence that ComfyUI is stopped.
-        $listening= -not $attempt.Wait(700) -or $probe.Connected
+        # Windows loopback refusal took ~2 seconds on this machine. A 700ms wait
+        # classified a closed port as unknown before WSAECONNREFUSED arrived.
+        # Wait for that bounded result; timeout still fails closed, never permits inference.
+        $listening= -not $attempt.Wait(5000) -or $probe.Connected
     } catch {
         $cause=$_.Exception.GetBaseException()
         if ($cause -is [Net.Sockets.SocketException] -and $cause.SocketErrorCode -eq [Net.Sockets.SocketError]::ConnectionRefused) { $listening=$false }
         else { throw 'ComfyUI status cannot be verified (socket access failed). Check local networking permissions before loading a model.' }
     } finally { $probe.Dispose() }
-    if ($listening) { throw 'ComfyUI port is reachable but queue status cannot be verified. Restore the queue API before loading a model.' }
+    if ($listening) { throw 'ComfyUI queue status cannot be verified (open port or TCP probe timeout). Restore the queue API before loading a model.' }
     $queue = $null
 }
 if ($queue -and (@($queue.queue_running).Count -gt 0 -or @($queue.queue_pending).Count -gt 0)) {

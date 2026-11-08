@@ -1,31 +1,28 @@
-# Tiến độ AI-LOCAL
+# WORK BOARD — HUB AI 0.4.0 candidate
 
-Mục tiêu: bộ điều phối local-first có vai trò, review/test, skill chuyên môn, triển khai lại và GitHub CI.
+Mục tiêu: HUB single-user trên Windows, local-first, đúng project, có review và bằng chứng. Chủ sở hữu tích hợp/QA/Git: Codex. Bản source được publish để theo dõi/CI; chưa chứng nhận production hoặc 100% mọi tác vụ.
 
-| Phase / Task | Owner | Trạng thái | Acceptance / bằng chứng |
+| Phase / task | Owner | Trạng thái | Bằng chứng / hành động tiếp |
 |---|---|---|---|
-| P1 — Kiểm kê, Ollama, model | Codex | Done | 5 alias inference ngắn; smoke-results.json |
-| P2 — C2C, ChatGPT Project | Codex + ChatGPT | Done | Doctor đạt; ChatGPT workspace_info/read_file đúng AI-LOCAL |
-| P3 — Resource guard, installer | Codex QA | Done | Tests offline và kiểm tra RAM đạt; ComfyUI dừng theo yêu cầu |
-| P4 — Local viết mã và vòng sửa | Local implementer -> Codex | Done (cơ chế) | Staging/apply/hash/path/syntax tests đạt; mã MiMo PowerShell chưa đạt bị từ chối, fallback Codex |
-| P5 — Role, skill, UI/code/QA chuẩn | Codex + ChatGPT review | Done | 7 skill validated/cài; Project instructions local-first lưu; ChatGPT review iteration 1 DONE, không còn blocking correction |
-| P6 — CI/package và kiểm thử cuối | Codex QA/release | Done | Offline/source/ZIP tests đạt; GitHub run 42447630933 success cho e24bf28, gồm test/build/upload kit |
-| P7 — Commit/push GitHub | Codex release | Done | main đã push, remote xác nhận source commit e24bf28331a6b25be5ea939135a392bc6825a7d8; commit tài liệu bàn giao theo sau |
-| MCP app live | ChatGPT + app operator | On demand / chưa đạt | Plugin có; status 429; local app chưa mở; không chuyển Godot project cũ |
-| Chrome nghiệm thu web app | Codex QA | N/A hiện tại | Toolkit không có ứng dụng web; bắt buộc khi có thay đổi web/UI |
+| A: Project registry, workspace và starter vanilla-web | Codex integration | Implemented / tested | ManagedProjects + Test-ManagedProjects; F:/Projects/AI-PROJECTS/{web,games,apps,media,learning} |
+| B: Local viết → Codex review → SHA apply → checks/repair | Local implementer / Codex QA | Implemented / runtime exercised | Hai smoke workflow; round giới hạn, không chạy lệnh model gợi ý |
+| C: Queue, retry, recovery, secrets và source boundary | Codex security | Tests passed | Durable request journal; same-request concurrent admission; atomic receipt/rollback; tamper/stale/private-file tests |
+| D: Web chat, reports, timeline, source, board, preview, provider setup | Codex integration | Implemented | Preview riêng origin; DPAPI; hỏi đáp tách triển khai; không arbitrary shell |
+| E: Offline regression | Codex QA | Passed | Test-ProjectAI.ps1: PowerShell suite và 19/19 Node tests; không inference/billing trong CI |
+| E: Chrome ngoài source cuối | Codex QA / user browser access | BLOCKED | Đã test draft, preview counter/reset, console và mobile trước các sửa cuối. Quyền Local browser use lại bị disabled; user báo bật nhưng công cụ vẫn từ chối. Không thay bằng headless/API |
+| E: Packaging / Git / hosted CI | Codex release | Candidate publication; gate riêng | Kit 98 file allowlist; SHA từng file đối chiếu source và test từ ZIP. Xem remote SHA/Actions của commit; không tạo production release/tag khi Chrome còn blocked |
 
-## Handoff đang mở
+## Runtime evidence 2026-11-08
 
-- Local implementer -> Codex: mẫu PowerShell không đạt syntax/contract đã bị từ chối; router/report hoàn thiện bằng fallback Codex và có regression tests. Ngưỡng model code lớn đã chặn khi RAM chưa đủ.
-- ChatGPT -> Codex release: iteration 1 DONE/APPROVED, không có blocking corrections; được chuyển sang commit/push đã được người dùng ủy quyền.
-- Codex release -> người dùng: source đã commit/push lên quanpl86/CODEX-GPT-AILOCAL main, CI kiểm thử/đóng gói/upload artifact đã success. MCP app runtime vẫn on-demand, chưa được coi là nghiệm thu live.
+- Local chat tiếng Việt hoạt động. Local MiMo thực sự viết greet proposal hai vòng nhưng sai Node test contract; Codex từ chối cả hai. Không áp dụng mã lỗi. Explicit fallback Codex tạo proposal, review mới approve/uiChanged=false, apply đúng SHA; 4/4 Node tests đạt. Nghiệm thu module pure-library qua API, không dùng làm bằng chứng UI HUB.
+- Score workflow: apply đúng SHA, 5/5 Node tests đạt; nghiệm thu non-UI đã ghi. Cả hai dự án smoke chỉ phục vụ QA, không phải sản phẩm người dùng.
+- CLI Codex adapter trả lời được; gpt-6-luna riêng cho HUB. Tắt remote plugins/apps/shell/tool pipe trong adapter; review độc lập các boundary không còn findings tại lượt review cuối (không phải chứng nhận bảo mật tuyệt đối).
+- Antigravity trả lời qua CLI plan mode; quyền tool/OS isolation chưa được nghiệm thu. Không giao quyền tự ghi source cho adapter này.
+- OpenAI API: form key/model và DPAPI đã test bằng dummy key, chưa có key thật hoặc paid call. ChatGPT web/C2C hiện không có session active được xác minh; cần ghép lại đúng workspace, không suy ra từ plugin installed.
+- MCP: Blender/Blockbench/Godot tiếp tục dùng binding và asset handoff. Godot port/project cũ không tự đổi; installed/local-ready không bằng remote task verified.
 
-Không coi MCP app là done cho tới khi read-only tool live và tác vụ thực tế của đúng project được kiểm tra.
+## Handoff còn lại
 
-## Phase tiếp theo — Hub và tự mở dịch vụ (0.2.0)
+Task: final Chrome acceptance. Owner: Codex QA khi quyền browser có hiệu lực. Scope: đúng source candidate, project placeholder/không chọn sai project, draft + hai auto flags, workflow checks/accept, source/board optimistic save, preview start/reuse/stop, provider validation không key thật, responsive/keyboard/console/network. Evidence: screenshot + steps/expected/actual. Không sửa trạng thái production hoặc ghi UI passed trước gate này.
 
-- Startup: Ollama tự mở/API đạt; Blender tự mở + addon + transport + remote status đạt. Blockbench local status/transport health đạt, remote vẫn 429.
-- MCP update: Blender server 2.2.7/addon hiện mới nhất; Blockbench runtime/plugin 0.4.0, 125 tests pass và audit sau sửa tương thích không có mục được báo. Godot server 1.12.18 đã pin; launcher chuyển stdio, project addon/runtime chưa nghiệm thu vì không có task Godot cụ thể.
-- Asset workflow: docs/ASSET-PIPELINE.vi.md ghi rõ Codex mở app và tích hợp, ChatGPT dùng MCP, người dùng duyệt/nhập API, local viết code theo contract.
-- Hub: registry private chỉ đăng ký AI-LOCAL; resolver/handoff tests pass. Project khác và Antigravity chưa tự đăng ký hoặc cấp adapter khi chưa kiểm chứng.
-- Regression: Test-ProjectAI và package build 0.2.0 đạt. Chưa coi mọi agent/MCP đã tự động hoàn toàn.
+Vận hành và cài cho dự án khác: docs/HUB-OPERATIONS.vi.md, docs/HUB-WEB.vi.md, docs/HUB-ACCEPTANCE.vi.md. Quy tắc kỹ thuật: AGENTS.md và docs/TEAM-CONTRACT.vi.md.

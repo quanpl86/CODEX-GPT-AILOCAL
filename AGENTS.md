@@ -22,7 +22,7 @@ Run local requests sequentially. Never stop another client's models/ComfyUI with
 
 Reuse modules and stack; fix causes, avoid redundant wrappers, duplication, catch-and-ignore patches, arbitrary timeouts and unrelated rewrites. Keep contracts explicit and refactors incremental. Keep secrets out of prompts/logs/source/bundles. Stronger review for auth, private/student data, tenant isolation, migrations, payment and execution boundaries.
 
-UI shares one approved design system and semantic tokens; preserve branding. Web/UI changes require final app interaction on external Chrome: relevant errors, responsive/keyboard and console/network checks. Headless tests alone do not satisfy that gate. This toolkit has no web app: UI QA is N/A.
+UI shares one approved design system and semantic tokens; preserve branding. Web/UI changes require final app interaction on external Chrome: relevant errors, responsive/keyboard and console/network checks. Headless tests alone do not satisfy that gate. The local web HUB is in web/; UI QA applies and a disabled browser must be recorded as blocked.
 
 Update WORK-BOARD.md at phase/task/handoff/blocker changes and report meaningful progress. Handoffs name task, owner, scope, evidence and requested action. Roles do not imply multiple running agents or authorize subagent spawning.
 

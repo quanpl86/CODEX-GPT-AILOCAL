@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,unlink,rmdir} from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {Previews} from './previews.mjs';
+test('project preview uses a separate origin, serves only public/source assets and stops only its owned process',{skip:process.platform!=='win32'},async t=>{
+  const base=await mkdtemp(path.join(os.tmpdir(),'hub-preview-'));
+  const root=path.join(base,'project'),state=path.join(base,'state');await mkdir(root);await mkdir(state);await mkdir(path.join(root,'src'));
+  await writeFile(path.join(root,'index.html'),'<h1>Preview fixture</h1>');await writeFile(path.join(root,'src','main.js'),'console.log("fixture")');await writeFile(path.join(root,'.env'),'fake-private-data');
+  const manager=new Previews(state),context={project:{id:'preview-fixture',root},metadata:JSON.stringify({stack:'vanilla-web'})};
+  t.after(async()=>{await manager.stop(context);for(const f of ['index.html','.env'])await unlink(path.join(root,f));await unlink(path.join(root,'src','main.js'));await rmdir(path.join(root,'src'));await rmdir(root);await rmdir(state);await rmdir(base);});
+  const preview=await manager.start(context);assert.match(preview.url,/^http:\/\/127\.0\.0\.1:\d+$/);
+  assert.equal((await manager.start(context)).reused,true);
+  assert.equal(await(await fetch(preview.url)).text(),'<h1>Preview fixture</h1>');
+  assert.equal((await fetch(preview.url+'/src/main.js')).status,200);
+  assert.equal((await fetch(preview.url+'/.env')).status,404);
+  assert.equal((await fetch(preview.url+'/project.json')).status,404);
+  assert.equal((await fetch(preview.url+'/src/%2e%2e/.env')).status,404);
+  assert.equal((await fetch(preview.url,{headers:{Origin:'https://evil.test'}})).status,403);
+  assert.equal((await fetch(preview.url,{method:'POST'})).status,405);
+  await manager.stop(context);await assert.rejects(fetch(preview.url));
+});

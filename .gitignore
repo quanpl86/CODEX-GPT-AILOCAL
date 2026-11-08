@@ -1,6 +1,7 @@
 local-runs/
 test-results/
 .local-ai.request.lock
+.ai-local.apply.lock
 *.log
 dist/
 integrations.json
@@ -13,4 +14,7 @@ AGENTS.md.backup-*
 modelfiles/
 .service-state/
 hub/projects.json
+hub/projects.json.lock
 hub/tasks/
+hub/web-state/
+hub/web-config.json

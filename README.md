@@ -69,3 +69,10 @@ Installer ghép AGENTS.md và tạo `.ai-local`, không ghi đè config khác bi
 ```
 
 GitHub Actions chạy tests offline trên Windows và tạo kit allowlist kèm checksum, không yêu cầu GPU/đăng nhập. Actions pin full SHA, token read-only. Chưa có service/hosting target nên chưa có deploy production. Push, CI xanh và deploy là ba trạng thái riêng.
+# Web HUB AI 0.4
+
+Mở `Open-Hub.cmd` hoặc chạy `pwsh -NoProfile -File Start-HubWeb.ps1`, sau đó truy cập `http://127.0.0.1:8765`.
+Quản lý dự án/board, hỏi đáp AI, tạo task bàn giao, local code staging và xem báo cáo. Hướng dẫn đầy đủ: [docs/HUB-WEB.vi.md](docs/HUB-WEB.vi.md).
+Workflow: local staging → Codex review → apply/checks → repair có giới hạn → nghiệm thu có bằng chứng. Có web starter/preview, file/board viewer và API setup mã hóa. Xem [hướng dẫn vận hành](docs/HUB-OPERATIONS.vi.md). Có cấu hình chưa đồng nghĩa provider/MCP đã được nghiệm thu live.
+
+Trạng thái bản 0.4.0: candidate đã qua regression; final-source Chrome gate đang bị quyền Local browser use chặn. Chưa production release. Các kết nối cần key/pairing được ghi riêng trong [WORK-BOARD.md](WORK-BOARD.md).

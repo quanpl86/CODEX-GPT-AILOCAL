@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,readdir,unlink,rmdir} from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {randomUUID} from 'node:crypto';
+import {RequestJournal} from './request-journal.mjs';
+test('request admissions survive restart/cache eviction and migrate older-than-100 history',async t=>{
+  const base=await mkdtemp(path.join(os.tmpdir(),'hub-requests-'));const journal=new RequestJournal(base);
+  t.after(async()=>{for(const name of await readdir(path.join(base,'requests'))){const dir=path.join(base,'requests',name);for(const file of await readdir(dir))await unlink(path.join(dir,file));await rmdir(dir);}await rmdir(path.join(base,'requests'));for(const name of await readdir(base))await unlink(path.join(base,name));await rmdir(base);});
+  const key=randomUUID(),record={id:randomUUID(),hash:'a'.repeat(64)};
+  assert.equal((await journal.publish(key,record)).created,true);
+  const restarted=new RequestJournal(base);assert.deepEqual(await restarted.find(key),record);
+  const race=await Promise.all([restarted.publish(key,{...record,id:randomUUID()}),restarted.publish(key,{...record,id:randomUUID()})]);assert.ok(race.every(result=>!result.created&&result.record.id===record.id));
+  await assert.rejects(restarted.publish(key,{id:randomUUID(),hash:'b'.repeat(64)}),/different content/);
+  const oldId=randomUUID(),oldKey=randomUUID();await writeFile(path.join(base,`${oldId}.json`),JSON.stringify({id:oldId,clientKey:oldKey,requestHash:'c'.repeat(64),created:'2000-01-01T00:00:00Z'}));
+  for(let i=0;i<101;i++)await writeFile(path.join(base,`${randomUUID()}.json`),'{}');
+  await restarted.migrate();assert.deepEqual(await restarted.find(oldKey),{id:oldId,hash:'c'.repeat(64)});
+  const interruptedKey=randomUUID();await mkdir(restarted.file(interruptedKey));
+  await assert.rejects(restarted.find(interruptedKey),/pending\/damaged/);
+  await assert.rejects(restarted.publish(interruptedKey,{id:randomUUID(),hash:'d'.repeat(64)}),/pending\/damaged/);
+});

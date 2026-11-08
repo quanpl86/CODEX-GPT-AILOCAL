@@ -58,3 +58,14 @@ Không gọi Test-Profiles.ps1 khi ComfyUI/GPU khác đang chạy. Khi cần ngh
 - Source commit: e24bf28331a6b25be5ea939135a392bc6825a7d8, nhánh main; remote refs/heads/main đã trả đúng SHA sau push.
 - GitHub Actions [Toolkit verification #42447630933](https://github.com/quanpl86/CODEX-GPT-AILOCAL/actions/runs/42447630933) completed/success. Tất cả bước checkout, offline checks, build kit và upload artifact đều success.
 - Commit tài liệu bàn giao theo sau chỉ ghi kết quả đã xảy ra. Kết quả workflow cho từng SHA xem trực tiếp trên GitHub; không nhầm trạng thái của một SHA với SHA khác.
+
+## HUB 0.4.0 candidate — 2026-11-08
+
+Tài liệu ở các phần trên là bằng chứng lịch sử; không suy ra kết nối C2C/MCP còn live từ lần kiểm tra cũ. Trạng thái hiện tại xem WORK-BOARD.md.
+
+- Test-ProjectAI.ps1 hiện gồm toàn bộ PowerShell regression và 19 Node tests: HTTP Host/Origin/CSRF, UTF-8, secret handling/DPAPI, preview origin/ownership, durable idempotency, >100 report restart recovery, source/receipt integrity, bounded repair và acceptance. Tất cả đạt trên Windows ở source candidate.
+- Independent Codex review đã phát hiện và sửa các lỗi source mutation/recheck, JS UI classification, receipt rollback, damaged report isolation, retry admission và interrupted workflow recovery; lượt sau không còn actionable findings. Review không thay thế tests hoặc chứng nhận mọi client bên ngoài.
+- Smoke score: 5/5 test thực; smoke greet: local sai hai vòng bị reject, explicit Codex fallback, reviewed SHA apply và 4/4 test thực. Module non-UI nghiệm thu qua API có ghi rõ operator_report; không giả làm tự động browser evidence.
+- Chrome ngoài đã tương tác thật với HUB, tạo project, xem source, preview counter/reset bằng keyboard, draft qua reload, mobile effective 433 px không overflow và console không lỗi tại lượt đó. Sau các sửa cuối, công cụ bị Local browser use disabled; user báo bật lại nhưng kiểm tra vẫn bị từ chối. Final-source Chrome gate BLOCKED. Screenshot trước đó không dùng để chứng nhận source cuối.
+- API key thật chưa có; C2C workspace session hiện chưa xác minh active; Antigravity tool isolation và MCP asset end-to-end theo project vẫn có giới hạn đã ghi trong sổ tay.
+- Git publication và hosted CI của SHA mới phải xem riêng sau push. Publication candidate không phải production deployment hay universal 100% completion.

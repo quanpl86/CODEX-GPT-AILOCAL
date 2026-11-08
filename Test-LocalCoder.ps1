@@ -19,12 +19,17 @@ function Expect-Failure([scriptblock]$Action,[string]$Pattern){
 $proposalPath=& $coder -Task web -ProjectPath $project -Files 'src/item.txt' -Prompt 'Update allowed file'
 if([IO.File]::ReadAllText($source) -ne 'old'){throw 'Coder wrote source before review'}
 $sha=(Get-FileHash $proposalPath).Hash
+$lock=[IO.File]::Open((Join-Path $project '.ai-local.apply.lock'),'OpenOrCreate','ReadWrite','None')
+try{Expect-Failure {& $apply -ProposalPath $proposalPath -ProjectPath $project -ReviewedSha256 $sha} 'Another applier'}finally{$lock.Dispose()}
 & $apply -ProposalPath $proposalPath -ProjectPath $project -ReviewedSha256 $sha -WhatIf|Out-Null
 if([IO.File]::ReadAllText($source) -ne 'old'){throw 'WhatIf wrote source'}
 Expect-Failure {& $apply -ProposalPath $proposalPath -ProjectPath $project -ReviewedSha256 ('0'*64)} 'changed after review'
 [IO.File]::WriteAllText($source,'stale')
 Expect-Failure {& $apply -ProposalPath $proposalPath -ProjectPath $project -ReviewedSha256 $sha} 'Source changed'
 [IO.File]::WriteAllText($source,'old',[Text.UTF8Encoding]::new($false))
+function Set-Content {param([Parameter(ValueFromPipeline=$true)]$Value,$LiteralPath,$Encoding) process{throw 'Simulated receipt persistence failure'}}
+try{Expect-Failure {& $apply -ProposalPath $proposalPath -ProjectPath $project -ReviewedSha256 $sha} 'Simulated receipt persistence failure'}finally{Remove-Item Function:\Set-Content}
+if([IO.File]::ReadAllText($source) -ne 'old' -or (Test-Path (Join-Path (Split-Path $proposalPath) 'apply-receipt.json'))){throw 'Receipt failure left source applied without its receipt'}
 $proposal=Get-Content $proposalPath -Raw|ConvertFrom-Json
 $stage=Join-Path (Split-Path $proposalPath) $proposal.changes[0].staged_file
 $stageBytes=[IO.File]::ReadAllBytes($stage)

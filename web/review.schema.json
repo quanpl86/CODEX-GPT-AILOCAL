@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {"type":"string","enum":["approve","changes_requested"]},
+    "summary": {"type":"string"},
+    "findings": {"type":"array","items":{"type":"string"}},
+    "proposalSha256": {"type":"string"},
+    "uiChanged": {"type":"boolean"}
+  },
+  "required": ["verdict","summary","findings","proposalSha256","uiChanged"],
+  "additionalProperties": false
+}

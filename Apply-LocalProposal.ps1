@@ -12,6 +12,13 @@ $root=[IO.Path]::GetFullPath($ProjectPath).TrimEnd('\','/')
 if($root -ne ([IO.Path]::GetFullPath($proposal.project).TrimEnd('\','/'))){throw 'Wrong project for proposal'}
 if($proposal.status -ne 'awaiting_codex_review'){throw 'Proposal is not ready for review/apply'}
 $runDir=Split-Path ([IO.Path]::GetFullPath($ProposalPath))
+if(Test-Path -LiteralPath (Join-Path $runDir 'apply-receipt.json')){throw 'Proposal already applied; generate a new proposal for further changes'}
+$applyLock=$null
+try {
+if(-not $WhatIfPreference){
+    try{$applyLock=[IO.File]::Open((Join-Path $root '.ai-local.apply.lock'),'OpenOrCreate','ReadWrite','None')}
+    catch [IO.IOException]{throw 'Another applier owns this project. Wait before applying.'}
+}
 $writes=@();$seen=@{}
 foreach($change in $proposal.changes){
     if($seen.ContainsKey($change.path)){throw 'Duplicate target path'}
@@ -27,6 +34,7 @@ foreach($change in $proposal.changes){
 if($writes.Count -eq 0){throw 'Proposal has no changes'}
 if($PSCmdlet.ShouldProcess($root,"Apply $($writes.Count) reviewed local-generated file(s)")){
     $written=@()
+    $receiptTemp=Join-Path $runDir ('apply-receipt-'+[guid]::NewGuid().ToString('N')+'.tmp')
     try{
         foreach($write in $writes){
             $null=Resolve-ProjectFile -ProjectPath $root -RelativePath $write.path
@@ -34,11 +42,15 @@ if($PSCmdlet.ShouldProcess($root,"Apply $($writes.Count) reviewed local-generate
             New-Item -ItemType Directory -Path (Split-Path $write.dest) -Force|Out-Null
             [IO.File]::WriteAllBytes($write.dest,[IO.File]::ReadAllBytes($write.stage))
         }
+        $receipt=@{proposal_sha256=$ReviewedSha256;applied_at=[DateTimeOffset]::Now.ToString('o');project=$root;files=@($writes.path);tests='not_run';role='codex-applier'}
+        $receipt|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $receiptTemp -Encoding utf8
+        Move-Item -LiteralPath $receiptTemp -Destination (Join-Path $runDir 'apply-receipt.json') -ErrorAction Stop
     }catch{
-        foreach($write in $written){if(-not $write.existed){Remove-Item -LiteralPath $write.dest -Force -ErrorAction SilentlyContinue}else{[IO.File]::WriteAllBytes($write.dest,[byte[]]$write.old)}}
+        $original=$_.Exception;$rollbackErrors=@()
+        foreach($write in $written){try{if(-not $write.existed){if(Test-Path -LiteralPath $write.dest){Remove-Item -LiteralPath $write.dest -Force -ErrorAction Stop}}else{[IO.File]::WriteAllBytes($write.dest,[byte[]]$write.old)}}catch{$rollbackErrors+=$_.Exception.Message}}
+        if($rollbackErrors.Count){throw "Apply failed: $($original.Message). Rollback also failed: $($rollbackErrors -join '; ')"}
         throw
-    }
-    $receipt=@{proposal_sha256=$ReviewedSha256;applied_at=[DateTimeOffset]::Now.ToString('o');project=$root;files=@($writes.path);tests='not_run';role='codex-applier'}
-    $receipt|ConvertTo-Json -Depth 6|Set-Content (Join-Path $runDir 'apply-receipt.json') -Encoding utf8
+    }finally{if(Test-Path -LiteralPath $receiptTemp){Remove-Item -LiteralPath $receiptTemp -Force -ErrorAction Stop}}
     Write-Output 'Reviewed code applied. Tests and runtime verification are still required.'
 }
+}finally{if($applyLock){$applyLock.Dispose()}}

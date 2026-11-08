@@ -40,3 +40,7 @@ MCP phải được gắn đúng project, không chỉ đúng tên app. Có th�
 ## Mức triển khai hiện tại
 
 Đã có kiểm tra registry/root, task package và contract chung. Chỉ AI-LOCAL được đăng ký mặc định. Chưa tự đăng ký các repository khác hoặc điều khiển Antigravity khi chưa xác minh giao diện của nó. Để onboard một dự án thật, cung cấp root/ID/loại và nguồn output mong muốn; agent kiểm tra tại chỗ rồi mới mở quyền và kết nối riêng.
+
+### Web HUB 0.3 preview
+
+Web local tại 127.0.0.1:8765 dùng cùng registry/resolver và các helper hiện có. Tạo dự án mới bằng New-ManagedProject dưới workspace/category/ID; không chứa source dự án con trong repo governance. UI hiển thị board, lịch sử và báo cáo; chạy chat hoặc local staging theo action allowlist. Codex/Antigravity/local đã có lượt trả lời qua adapter; OpenAI API cần key/model. MCP cloud của ChatGPT không tự chuyển sang backend web. Chrome và isolation review còn chờ; chưa coi HUB là tự động toàn bộ/production. Xem HUB-WEB.vi.md để cài và tiếp nhận các gate còn mở.
