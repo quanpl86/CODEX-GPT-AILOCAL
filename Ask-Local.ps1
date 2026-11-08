@@ -27,6 +27,7 @@ try {
     } catch [IO.IOException] {
         throw 'Another local request is active in this workspace. Wait until it finishes.'
     }
+    & "$PSScriptRoot\Ensure-Ollama.ps1"
     $running = Invoke-RestMethod "$baseUrl/api/ps" -TimeoutSec 10
     if (@($running.models).Count -gt 0) {
         throw 'Ollama already has a model loaded. Finish other requests and unload it explicitly before using this helper; no existing model was stopped.'

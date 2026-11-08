@@ -11,3 +11,6 @@ integration-status.json
 *.dpapi
 AGENTS.md.backup-*
 modelfiles/
+.service-state/
+hub/projects.json
+hub/tasks/

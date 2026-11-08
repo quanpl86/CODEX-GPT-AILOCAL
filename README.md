@@ -2,6 +2,12 @@
 
 Bộ công cụ Windows/PowerShell để **ChatGPT lập kế hoạch, AI local viết mã, Codex review và kiểm thử**. Giảm gọi cloud cho task nhỏ, giữ kiểm soát phạm vi, chất lượng và tài nguyên.
 
+Đây cũng là hub quản trị chung: [kiến trúc dự án tổng](docs/HUB-ARCHITECTURE.vi.md),
+[quy trình asset 2D/3D](docs/ASSET-PIPELINE.vi.md). Đăng ký dự án bằng registry local;
+New-HubTask tạo handoff đúng root/role, không giả định agent đã chạy.
+Ensure-ProjectService tự mở dịch vụ theo nhu cầu và chờ readiness có thời hạn.
+Ask-Local tự khởi động Ollama nếu API chưa chạy. Credential/consent lần đầu do người dùng xử lý.
+
 ## Bắt đầu
 
 Yêu cầu: PowerShell 7, Ollama đang chạy; Node 20+ và Codex with ChatGPT nếu dùng C2C. Không tự tải model hay đổi provider Codex toàn máy.

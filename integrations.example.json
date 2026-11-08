@@ -2,6 +2,17 @@
   "c2cCheckout": "F:/Projects/codex-with-chatgpt/repo",
   "c2cConnector": "REPLACE_WITH_THIS_PROJECT_CONNECTOR",
   "browser": "chrome",
+  "services": {
+    "ollama": {"executable": "F:/AI/Ollama/App/ollama.exe", "arguments": ["serve"], "port": 11434},
+    "blender": {"executable": "C:/Program Files/Blender Foundation/Blender 5.2/blender.exe", "arguments": [], "port": 9876},
+    "blockbench": {"executable": "C:/Program Files/Blockbench/Blockbench.exe", "arguments": [], "port": 8787},
+    "godot": {"executable": "REPLACE_WITH_VERIFIED_GODOT_EXECUTABLE", "arguments": [], "projectConfig": "REPLACE_WITH_3D_MCP_GODOT_CONFIG_PATH", "transportMode": "stdio", "port": 9876}
+  },
+  "transport": {
+    "executable": "F:/Projects/tunnel-client-v0.0.15-windows-amd64/tunnel-client.exe",
+    "blenderKeyStore": "REPLACE_WITH_EXISTING_BLENDER_DPAPI_STORE",
+    "sharedKeyStore": "REPLACE_WITH_EXISTING_3D_MCP_DPAPI_STORE"
+  },
   "apps": {
     "blender": {"launcher": "F:/Apps/Blender-MCP-Quick-Launcher-Windows/Blender MCP.cmd", "profile": "blender-win", "ports": [9876]},
     "blockbench": {"launcher": "F:/Apps/Blockbench-MCP-Launcher/Blockbench MCP.cmd", "profile": "blockbench-win", "ports": [8787]},

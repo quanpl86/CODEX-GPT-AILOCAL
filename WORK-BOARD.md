@@ -21,3 +21,11 @@ Mục tiêu: bộ điều phối local-first có vai trò, review/test, skill ch
 - Codex release -> người dùng: source đã commit/push lên quanpl86/CODEX-GPT-AILOCAL main, CI kiểm thử/đóng gói/upload artifact đã success. MCP app runtime vẫn on-demand, chưa được coi là nghiệm thu live.
 
 Không coi MCP app là done cho tới khi read-only tool live và tác vụ thực tế của đúng project được kiểm tra.
+
+## Phase tiếp theo — Hub và tự mở dịch vụ (0.2.0)
+
+- Startup: Ollama tự mở/API đạt; Blender tự mở + addon + transport + remote status đạt. Blockbench local status/transport health đạt, remote vẫn 429.
+- MCP update: Blender server 2.2.7/addon hiện mới nhất; Blockbench runtime/plugin 0.4.0, 125 tests pass và audit sau sửa tương thích không có mục được báo. Godot server 1.12.18 đã pin; launcher chuyển stdio, project addon/runtime chưa nghiệm thu vì không có task Godot cụ thể.
+- Asset workflow: docs/ASSET-PIPELINE.vi.md ghi rõ Codex mở app và tích hợp, ChatGPT dùng MCP, người dùng duyệt/nhập API, local viết code theo contract.
+- Hub: registry private chỉ đăng ký AI-LOCAL; resolver/handoff tests pass. Project khác và Antigravity chưa tự đăng ký hoặc cấp adapter khi chưa kiểm chứng.
+- Regression: Test-ProjectAI và package build 0.2.0 đạt. Chưa coi mọi agent/MCP đã tự động hoàn toàn.

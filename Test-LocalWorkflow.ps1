@@ -33,6 +33,7 @@ foreach ($file in @('Ask-Local.ps1','Invoke-LocalAdvice.ps1','profiles.json')) {
 }
 # Isolate resource probes from these offline HTTP contract tests.
 Set-Content (Join-Path $testRoot 'Assert-LocalCapacity.ps1') 'param($Task)' -Encoding utf8
+Set-Content (Join-Path $testRoot 'Ensure-Ollama.ps1') '# Startup isolated from offline contract tests' -Encoding utf8
 $launcher = Join-Path $testRoot 'Ask-Local.ps1'
 $wrapper = Join-Path $testRoot 'Invoke-LocalAdvice.ps1'
 $text = & $launcher -Task web -Prompt 'Kiểm tra giao diện' -MaxTokens 64

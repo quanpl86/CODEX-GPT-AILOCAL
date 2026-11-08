@@ -5,7 +5,7 @@ foreach($file in Get-ChildItem -LiteralPath $PSScriptRoot -File | Where-Object E
     if($parseErrors.Count){throw ($parseErrors|Out-String)}
 }
 Write-Output 'PASS: PowerShell syntax'
-foreach($test in @('Test-LocalWorkflow.ps1','Test-CapacityGuard.ps1','Test-LocalCoder.ps1','Test-TaskRouting.ps1','Test-Installer.ps1')){
+foreach($test in @('Test-LocalWorkflow.ps1','Test-CapacityGuard.ps1','Test-LocalCoder.ps1','Test-TaskRouting.ps1','Test-Installer.ps1','Test-ServiceStartup.ps1','Test-HubRouting.ps1')){
     & (Join-Path $PSScriptRoot $test)
 }
 $report=& "$PSScriptRoot\New-ReviewReport.ps1" -TaskId qa-1 -Finding 'Unexpected result' -Expected 'A' -Actual 'B' -RequestedChange 'Fix the domain rule'

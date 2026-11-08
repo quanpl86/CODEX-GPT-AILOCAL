@@ -2,6 +2,11 @@
 
 Nguồn đã đọc: các launcher dưới `F:\Apps`, ngày 08/11/2026. Không sao chép các thông tin máy cụ thể này làm mặc định cho mọi dự án.
 
+**Cập nhật 0.2.0:** xem MCP-UPDATES.vi.md cho phiên bản và cơ chế Ensure-ProjectService
+mới. Các ghi chú 1.12.3/HTTP và cổng local đóng bên dưới là baseline trước update;
+Godot hiện pin 1.12.18/stdio, Blender remote đã xác minh thành công. Không dùng baseline
+cũ để ghi đè launcher mới. ASSET-PIPELINE.vi.md là contract tạo asset theo project.
+
 ## Kiểm tra nhanh
 
 ```powershell

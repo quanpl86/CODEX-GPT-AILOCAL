@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "policyVersion": "0.2.0",
+  "projects": [
+    {"id": "ai-local", "root": "..", "kind": "toolkit", "enabled": true, "agents": ["codex", "chatgpt", "local"], "mcp": []}
+  ]
+}

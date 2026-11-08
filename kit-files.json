@@ -45,5 +45,16 @@
   "smoke-results.json",
   ".editorconfig",
   ".gitattributes",
-  ".gitignore"
+  ".gitignore",
+  "Ensure-ProjectService.ps1",
+  "Ensure-Ollama.ps1",
+  "Start-SavedMcpTransport.ps1",
+  "Test-ServiceStartup.ps1",
+  "docs/ASSET-PIPELINE.vi.md",
+  "hub/projects.example.json",
+  "Resolve-HubProject.ps1",
+  "New-HubTask.ps1",
+  "docs/HUB-ARCHITECTURE.vi.md",
+  "Test-HubRouting.ps1",
+  "docs/MCP-UPDATES.vi.md"
 ]

@@ -33,3 +33,14 @@ Run ./Test-ProjectAI.ps1 for toolkit changes. Package final tested source with N
 Resume the existing C2C checkpoint/session. The user selected Chrome for this setup. Keep control messages small; ChatGPT reads source and released records through its connector. No pasted code/diffs/logs; never reuse another workspace's connector.
 
 Machine settings live in ignored integrations.json; integrations.example.json is a template. Verify the active application/project and one writer per file. Blender/Godot default editor ports conflict at 9876: use sequentially until both ends are changed and tested. Never silently change the shared Godot binding. Installed/discoverable tools do not establish live connectivity or end-to-end success.
+
+For asset tasks read docs/ASSET-PIPELINE.vi.md. Codex opens app/plugin/transport with
+Ensure-ProjectService.ps1; ChatGPT operates the verified MCP for its assigned asset;
+the user handles credential/consent and visual approval; Codex verifies exports and
+integrates/tests, while local AI implements the bounded game code. Do not interpret
+local_ready or transport process startup as remote/project verification.
+
+This repository is the central governance hub. Read docs/HUB-ARCHITECTURE.vi.md
+before cross-project routing. Resolve exact project IDs through the private registry;
+ask mode is read-only. Never silently register/move repositories, widen write roots,
+copy another project's credentials/bindings or mark a generated handoff as executed.
