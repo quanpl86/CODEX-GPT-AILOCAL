@@ -1,0 +1,11 @@
+{
+  "c2cCheckout": "F:/Projects/codex-with-chatgpt/repo",
+  "c2cConnector": "REPLACE_WITH_THIS_PROJECT_CONNECTOR",
+  "browser": "chrome",
+  "apps": {
+    "blender": {"launcher": "F:/Apps/Blender-MCP-Quick-Launcher-Windows/Blender MCP.cmd", "profile": "blender-win", "ports": [9876]},
+    "blockbench": {"launcher": "F:/Apps/Blockbench-MCP-Launcher/Blockbench MCP.cmd", "profile": "blockbench-win", "ports": [8787]},
+    "godot": {"launcher": "F:/Apps/Godot-MCP-Quick-Launcher-Windows-v2/Godot MCP.cmd", "profile": "godot-win", "ports": [3000,9876,9877]}
+  },
+  "portConflict": "Blender and Godot editor both default to 9876. Verify bindings and run sequentially."
+}

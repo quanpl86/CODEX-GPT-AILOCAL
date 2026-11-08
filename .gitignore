@@ -1,0 +1,13 @@
+local-runs/
+test-results/
+.local-ai.request.lock
+*.log
+dist/
+integrations.json
+integration-status.json
+.env
+.env.*
+!.env.example
+*.dpapi
+AGENTS.md.backup-*
+modelfiles/

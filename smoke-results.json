@@ -1,0 +1,47 @@
+[
+  {
+    "task": "web",
+    "model": "local-web",
+    "done": true,
+    "content": "a + b",
+    "tokens": 4,
+    "tokens_per_second": 26.78,
+    "total_seconds": 8.16
+  },
+  {
+    "task": "game",
+    "model": "local-game",
+    "done": true,
+    "content": "a + b",
+    "tokens": 4,
+    "tokens_per_second": 22.58,
+    "total_seconds": 8.42
+  },
+  {
+    "task": "brain",
+    "model": "local-brain",
+    "done": true,
+    "content": "a + b",
+    "tokens": 6,
+    "tokens_per_second": 2.17,
+    "total_seconds": 79.82
+  },
+  {
+    "task": "learning",
+    "model": "local-learning",
+    "done": true,
+    "content": "a + b",
+    "tokens": 6,
+    "tokens_per_second": 2.33,
+    "total_seconds": 70.09
+  },
+  {
+    "task": "review",
+    "model": "local-review",
+    "done": true,
+    "content": "a + b",
+    "tokens": 4,
+    "tokens_per_second": 0.57,
+    "total_seconds": 41.38
+  }
+]

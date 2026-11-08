@@ -1,0 +1,13 @@
+param(
+    [Parameter(Mandatory=$true)][string]$TaskId,
+    [Parameter(Mandatory=$true)][string]$Finding,
+    [Parameter(Mandatory=$true)][string]$Expected,
+    [Parameter(Mandatory=$true)][string]$Actual,
+    [Parameter(Mandatory=$true)][string]$RequestedChange,
+    [ValidateSet('info','warning','error')][string]$Severity='error'
+)
+[PSCustomObject]@{
+    task_id=$TaskId;from_role='codex-reviewer';to_role='local-implementer'
+    severity=$Severity;finding=$Finding;expected=$Expected;actual=$Actual
+    requested_change=$RequestedChange
+}

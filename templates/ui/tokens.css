@@ -1,0 +1,29 @@
+/* Starter semantic tokens. Map to the product's approved brand before adoption.
+   Import once; application components consume these tokens instead of ad-hoc values. */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-border: #cbd5e1;
+  --color-action: #1d4ed8;
+  --color-on-action: #ffffff;
+  --color-danger: #b91c1c;
+  --color-success: #166534;
+  --color-focus: #1d4ed8;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-size-body: 1rem;
+  --line-height-body: 1.5;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --radius-control: 0.5rem;
+  --radius-panel: 0.75rem;
+  --duration-ui: 150ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-ui: 0ms; }
+}
