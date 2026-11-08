@@ -52,3 +52,9 @@ Không gọi Test-Profiles.ps1 khi ComfyUI/GPU khác đang chạy. Khi cần ngh
 - CI Windows/pipeline đóng gói đã cấu hình; chờ kiểm tra hosted run sau push. Không có dịch vụ web nên Chrome app QA là N/A. Phiên ChatGPT trên Chrome không được tính là QA app.
 
 - ChatGPT đã review iteration 1 qua connector và trả DONE/APPROVED, không có blocking corrections; đọc source/staged diff và execution_output exit code 0. Đây là review phần toolkit, không phải chứng nhận production cho ứng dụng chưa tồn tại.
+
+## Publication đã xác minh
+
+- Source commit: e24bf28331a6b25be5ea939135a392bc6825a7d8, nhánh main; remote refs/heads/main đã trả đúng SHA sau push.
+- GitHub Actions [Toolkit verification #42447630933](https://github.com/quanpl86/CODEX-GPT-AILOCAL/actions/runs/42447630933) completed/success. Tất cả bước checkout, offline checks, build kit và upload artifact đều success.
+- Commit tài liệu bàn giao theo sau chỉ ghi kết quả đã xảy ra. Kết quả workflow cho từng SHA xem trực tiếp trên GitHub; không nhầm trạng thái của một SHA với SHA khác.
